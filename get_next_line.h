@@ -6,7 +6,7 @@
 /*   By: marschul <marschul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 15:59:08 by marschul          #+#    #+#             */
-/*   Updated: 2023/10/20 13:39:22 by marschul         ###   ########.fr       */
+/*   Updated: 2023/10/20 14:32:59 by marschul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,6 @@ ssize_t	seek(t_readbuffer *readbuffer);
 void	copy(char *newbuffer, char *oldbuffer, size_t size);
 void	*stash_resize(t_stash *stash);
 char	*stash_write(t_stash *stash, char *src, ssize_t size);
+void	*gnl_malloc(t_stash **stash, t_readbuffer **readbuffer);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: marschul <marschul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:49:58 by marschul          #+#    #+#             */
-/*   Updated: 2023/10/20 13:57:03 by marschul         ###   ########.fr       */
+/*   Updated: 2023/10/20 14:33:50 by marschul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,27 @@ char	*stash_write(t_stash *stash, char *src, ssize_t size)
 		size--;
 	}
 	return (stash->buffer);
+}
+
+void	*gnl_malloc(t_stash **stash, t_readbuffer **readbuffer)
+{
+	*stash = malloc(sizeof(t_stash));
+	*readbuffer = malloc(sizeof(t_readbuffer));
+	if (*stash == NULL || *readbuffer == NULL)
+	{
+		free(*stash);
+		free(*readbuffer);
+		return (NULL);
+	}
+	(*stash)->buffer = malloc(BUFFER_SIZE);
+	(*readbuffer)->buffer = malloc(BUFFER_SIZE);
+	if ((*stash)->buffer == NULL || (*readbuffer)->buffer == NULL)
+	{
+		free((*stash)->buffer);
+		free((*readbuffer)->buffer);
+		free(*stash);
+		free(*readbuffer);
+		return (NULL);
+	}
+	return ((void *) 1);
 }

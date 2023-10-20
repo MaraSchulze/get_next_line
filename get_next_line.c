@@ -6,7 +6,7 @@
 /*   By: marschul <marschul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:02:57 by marschul          #+#    #+#             */
-/*   Updated: 2023/10/20 13:34:55 by marschul         ###   ########.fr       */
+/*   Updated: 2023/10/20 14:31:19 by marschul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,34 +34,8 @@ void	*init(t_stash **stash, t_readbuffer **readbuffer, int *status)
 {
 	if (*status == 0)
 	{
-		*stash = (t_stash *) malloc(sizeof(t_stash));
-		if (*stash == NULL)
-		{
-			free(*stash);
+		if (gnl_malloc(stash, readbuffer) == NULL)
 			return (NULL);
-		}
-		*readbuffer = (t_readbuffer *) malloc(sizeof(t_readbuffer));
-		if (*readbuffer == NULL)
-		{
-			free(*readbuffer);
-			free(*stash);
-			return (NULL);
-		}
-		(*stash)->buffer = malloc(BUFFER_SIZE);
-		if ((*stash)->buffer == NULL)
-		{
-			free(*stash);
-			free(*readbuffer);
-			return (NULL);
-		}
-		(*readbuffer)->buffer = malloc(BUFFER_SIZE);
-		if ((*stash)->buffer == NULL || (*readbuffer)->buffer == NULL)
-		{
-			free((*stash)->buffer);
-			free(*stash);
-			free(*readbuffer);
-			return (NULL);
-		}
 		(*stash)->end = (*stash)->buffer;
 		(*stash)->size = BUFFER_SIZE;
 		(*readbuffer)->start = (*readbuffer)->buffer;
