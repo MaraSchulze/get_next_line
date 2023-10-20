@@ -6,7 +6,7 @@
 /*   By: marschul <marschul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:02:57 by marschul          #+#    #+#             */
-/*   Updated: 2023/10/20 14:31:19 by marschul         ###   ########.fr       */
+/*   Updated: 2023/10/20 19:08:03 by marschul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 #include <unistd.h>
 #include "get_next_line.h"
 
+/*
+Every return passes through this function.
+All memory is freed here.
+If ret_value is not NULL, we pass this, otherwise we return NULL.
+*/
 char	*error_wrapper(t_stash *stash, t_readbuffer *readbuffer, \
 			int *status, char *ret_value)
 {
@@ -30,6 +35,10 @@ char	*error_wrapper(t_stash *stash, t_readbuffer *readbuffer, \
 	return (NULL);
 }
 
+/*
+When get_next_line is called, we determine the state here.
+Also memory is being allocated here.
+*/
 void	*init(t_stash **stash, t_readbuffer **readbuffer, int *status)
 {
 	if (*status == 0)
@@ -50,6 +59,9 @@ void	*init(t_stash **stash, t_readbuffer **readbuffer, int *status)
 	return (NULL);
 }
 
+/*
+Copy read buffer to stash.
+*/
 char	*copy_rb_to_stash(t_stash *stash, t_readbuffer *readbuffer)
 {
 	ssize_t	size;
@@ -64,6 +76,10 @@ char	*copy_rb_to_stash(t_stash *stash, t_readbuffer *readbuffer)
 	return (readbuffer->buffer);
 }
 
+/*
+Return everything that is in the stack and the content of
+read buffer up until the first NL. That is basically the line.
+*/
 char	*copy_stash_and_rb_to_retb(t_stash *stash, t_readbuffer *readbuffer, \
 	ssize_t length2)
 {
@@ -89,6 +105,11 @@ char	*copy_stash_and_rb_to_retb(t_stash *stash, t_readbuffer *readbuffer, \
 	return (return_buffer);
 }
 
+/*
+We read and then test for NL. If there is no NL we stash and
+read again, until we find NL or EOF.
+Then we return stash and the rest of the line that is in read buffer.
+*/
 char	*get_next_line(int fd)
 {
 	static t_stash		*stash;

@@ -1,23 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marschul <marschul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:49:58 by marschul          #+#    #+#             */
-/*   Updated: 2023/10/20 19:05:47 by marschul         ###   ########.fr       */
+/*   Updated: 2023/10/20 18:29:59 by marschul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <string.h>
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
-/*
-Find NL and return size of distance to next NL.
-If there is no NL, we return -1.
-*/
 ssize_t	seek(t_readbuffer *readbuffer)
 {
 	char	*pointer;
@@ -34,9 +30,6 @@ ssize_t	seek(t_readbuffer *readbuffer)
 	return (-1);
 }
 
-/*
-Simple copy function.
-*/
 void	copy(char *newbuffer, char *oldbuffer, size_t size)
 {
 	while (size != 0)
@@ -48,10 +41,6 @@ void	copy(char *newbuffer, char *oldbuffer, size_t size)
 	}
 }
 
-/*
-Resizes the stash buffer if we need more space.
-Amortisized buffer.
-*/
 void	*stash_resize(t_stash *stash)
 {
 	size_t	old_buffer_size;
@@ -69,10 +58,6 @@ void	*stash_resize(t_stash *stash)
 	return (stash->buffer);
 }
 
-/*
-Handles the write operation to the stash.
-Is being used like a public method.
-*/
 char	*stash_write(t_stash *stash, char *src, ssize_t size)
 {
 	while (size != 0)
@@ -90,27 +75,25 @@ char	*stash_write(t_stash *stash, char *src, ssize_t size)
 	return (stash->buffer);
 }
 
-/*
-Handles memory allocation and freeing of the buffers and structs.
-*/
-void	*gnl_malloc(t_stash **stash, t_readbuffer **readbuffer)
+void	*gnl_malloc(t_single *single, int fd)
 {
-	*stash = malloc(sizeof(t_stash));
-	*readbuffer = malloc(sizeof(t_readbuffer));
-	if (*stash == NULL || *readbuffer == NULL)
+	single->stash_arr[fd] = malloc(sizeof(t_stash));
+	single->readbuffer_arr[fd] = malloc(sizeof(t_readbuffer));
+	if (single->stash_arr[fd] == NULL || single->readbuffer_arr[fd] == NULL)
 	{
-		free(*stash);
-		free(*readbuffer);
+		free(single->stash_arr[fd]);
+		free(single->readbuffer_arr[fd]);
 		return (NULL);
 	}
-	(*stash)->buffer = malloc(BUFFER_SIZE);
-	(*readbuffer)->buffer = malloc(BUFFER_SIZE);
-	if ((*stash)->buffer == NULL || (*readbuffer)->buffer == NULL)
+	single->stash_arr[fd]->buffer = malloc(BUFFER_SIZE);
+	single->readbuffer_arr[fd]->buffer = malloc(BUFFER_SIZE);
+	if (single->stash_arr[fd]->buffer == NULL || \
+		single->readbuffer_arr[fd]->buffer == NULL)
 	{
-		free((*stash)->buffer);
-		free((*readbuffer)->buffer);
-		free(*stash);
-		free(*readbuffer);
+		free(single->stash_arr[fd]->buffer);
+		free(single->readbuffer_arr[fd]->buffer);
+		free(single->stash_arr[fd]);
+		free(single->readbuffer_arr[fd]);
 		return (NULL);
 	}
 	return ((void *) 1);
