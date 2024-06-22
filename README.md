@@ -1,4 +1,4 @@
-get_next_line is a function that reads from a file descriptor line by line or until EOF.
+get_next_line is a function that reads from a file descriptor line by line or until EOF. The 3 files are get_next_line.c get_next_line_utils.c get_next_line.h.
 
 The bonus reads from several fds and only uses one static variable. The 3 bonus files have extension "_bonus".
 
