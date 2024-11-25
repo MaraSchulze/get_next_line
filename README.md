@@ -3,6 +3,9 @@ get_next_line is a function that reads from a file descriptor line by line or un
 The bonus reads from several fds and only uses one static variable. The 3 bonus files have extension "_bonus".  
 The project description is in the pdf file.  
 
+## I passed the project with 125%
+<img src="ScreenshotSuccess.png" alt="Success Photo" width="200">
+
 ## Usage
 This project was written for and compiled on a Mac.  
 Include the header file:
